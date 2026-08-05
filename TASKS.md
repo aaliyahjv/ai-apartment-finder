@@ -2,7 +2,7 @@
 
 ## Phase 1: Frontend
 
-- [ ] Create dashboard layout
+- [x] Create dashboard layout
 - [ ] Create search filters
 - [ ] Create apartment cards
 - [ ] Add mock apartment data
