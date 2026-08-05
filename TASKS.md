@@ -4,8 +4,8 @@
 
 - [x] Create dashboard layout
 - [ ] Create search filters
-- [ ] Create apartment cards
-- [ ] Add mock apartment data
+- [x] Create apartment cards
+- [x] Add mock apartment data
 - [ ] Add apartment comparison view
 
 ## Phase 2: Backend
