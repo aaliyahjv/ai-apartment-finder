@@ -1,5 +1,7 @@
+import { ApartmentGrid } from "@/components/apartments/ApartmentGrid";
 import { DashboardHeader } from "@/components/layout/DashboardHeader";
 import { DashboardShell } from "@/components/layout/DashboardShell";
+import { mockApartments } from "@/data/mock-apartments";
 
 function SectionPlaceholder({
   title,
@@ -41,11 +43,9 @@ export default function Home() {
       />
 
       <div className="grid flex-1 gap-6 lg:grid-cols-5 lg:items-start">
-        <SectionPlaceholder
-          title="Apartment listings"
-          description="Listing cards will render in this area."
-          className="lg:col-span-3 min-h-[320px]"
-        />
+        <div className="lg:col-span-3">
+          <ApartmentGrid apartments={mockApartments} />
+        </div>
         <SectionPlaceholder
           title="Map"
           description="Interactive Google Maps view coming in a later phase."
