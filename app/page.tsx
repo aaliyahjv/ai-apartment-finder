@@ -1,7 +1,16 @@
+"use client";
+
+import { useMemo, useState } from "react";
+import { ApartmentFilters } from "@/components/apartments/ApartmentFilters";
 import { ApartmentGrid } from "@/components/apartments/ApartmentGrid";
 import { DashboardHeader } from "@/components/layout/DashboardHeader";
 import { DashboardShell } from "@/components/layout/DashboardShell";
 import { mockApartments } from "@/data/mock-apartments";
+import { filterApartments } from "@/lib/filter-apartments";
+import {
+  createDefaultApartmentFilters,
+  type ApartmentFiltersState,
+} from "@/types/apartment-filters";
 
 function SectionPlaceholder({
   title,
@@ -24,7 +33,40 @@ function SectionPlaceholder({
   );
 }
 
+function uniqueSorted(values: string[]) {
+  return [...new Set(values)].sort((a, b) => a.localeCompare(b));
+}
+
 export default function Home() {
+  const budgetMax = useMemo(
+    () =>
+      mockApartments.length > 0
+        ? Math.ceil(
+            Math.max(...mockApartments.map((a) => a.rent)) / 100,
+          ) * 100
+        : 5000,
+    [],
+  );
+
+  const [filters, setFilters] = useState<ApartmentFiltersState>(() =>
+    createDefaultApartmentFilters(mockApartments),
+  );
+
+  const neighborhoodOptions = useMemo(
+    () => uniqueSorted(mockApartments.map((a) => a.neighborhood)),
+    [],
+  );
+
+  const amenityOptions = useMemo(
+    () => uniqueSorted(mockApartments.flatMap((a) => a.amenities)),
+    [],
+  );
+
+  const filteredApartments = useMemo(
+    () => filterApartments(mockApartments, filters),
+    [filters],
+  );
+
   return (
     <DashboardShell header={<DashboardHeader />}>
       <div className="flex flex-col gap-2">
@@ -37,14 +79,17 @@ export default function Home() {
         </p>
       </div>
 
-      <SectionPlaceholder
-        title="Search filters"
-        description="Budget, location, beds, baths, and amenities will appear here."
+      <ApartmentFilters
+        value={filters}
+        onChange={setFilters}
+        neighborhoodOptions={neighborhoodOptions}
+        amenityOptions={amenityOptions}
+        budgetMax={budgetMax}
       />
 
       <div className="grid flex-1 gap-6 lg:grid-cols-5 lg:items-start">
         <div className="lg:col-span-3">
-          <ApartmentGrid apartments={mockApartments} />
+          <ApartmentGrid apartments={filteredApartments} />
         </div>
         <SectionPlaceholder
           title="Map"
