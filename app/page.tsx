@@ -3,9 +3,11 @@
 import { useMemo, useState } from "react";
 import { ApartmentFilters } from "@/components/apartments/ApartmentFilters";
 import { ApartmentGrid } from "@/components/apartments/ApartmentGrid";
+import { ComparePanel } from "@/components/apartments/ComparePanel";
 import { DashboardHeader } from "@/components/layout/DashboardHeader";
 import { DashboardShell } from "@/components/layout/DashboardShell";
 import { mockApartments } from "@/data/mock-apartments";
+import { useCompareSelection } from "@/hooks/useCompareSelection";
 import { filterApartments } from "@/lib/filter-apartments";
 import {
   createDefaultApartmentFilters,
@@ -67,6 +69,17 @@ export default function Home() {
     [filters],
   );
 
+  const {
+    selectedApartments,
+    comparisonOpen,
+    setComparisonOpen,
+    toggleCompare,
+    removeFromCompare,
+    clearCompare,
+    isCompareSelected,
+    isCompareDisabled,
+  } = useCompareSelection(mockApartments);
+
   return (
     <DashboardShell header={<DashboardHeader />}>
       <div className="flex flex-col gap-2">
@@ -89,7 +102,12 @@ export default function Home() {
 
       <div className="grid flex-1 gap-6 lg:grid-cols-5 lg:items-start">
         <div className="lg:col-span-3">
-          <ApartmentGrid apartments={filteredApartments} />
+          <ApartmentGrid
+            apartments={filteredApartments}
+            isCompareSelected={isCompareSelected}
+            isCompareDisabled={isCompareDisabled}
+            onToggleCompare={toggleCompare}
+          />
         </div>
         <SectionPlaceholder
           title="Map"
@@ -97,6 +115,15 @@ export default function Home() {
           className="lg:col-span-2 min-h-[320px] lg:min-h-[480px]"
         />
       </div>
+
+      <ComparePanel
+        selectedApartments={selectedApartments}
+        onRemove={removeFromCompare}
+        onClear={clearCompare}
+        comparisonOpen={comparisonOpen}
+        onOpenComparison={() => setComparisonOpen(true)}
+        onCloseComparison={() => setComparisonOpen(false)}
+      />
     </DashboardShell>
   );
 }

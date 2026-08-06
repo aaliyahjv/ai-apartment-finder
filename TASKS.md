@@ -6,7 +6,7 @@
 - [x] Create search filters
 - [x] Create apartment cards
 - [x] Add mock apartment data
-- [ ] Add apartment comparison view
+- [x] Add apartment comparison view
 
 ## Phase 2: Backend
 

@@ -2,6 +2,9 @@ import type { Apartment } from "@/types/apartment";
 
 type ApartmentCardProps = {
   apartment: Apartment;
+  compareSelected?: boolean;
+  compareDisabled?: boolean;
+  onToggleCompare?: () => void;
 };
 
 function formatRent(rent: number) {
@@ -20,13 +23,24 @@ function formatBedBath(bedrooms: number, bathrooms: number) {
 
 const MAX_VISIBLE_AMENITIES = 3;
 
-export function ApartmentCard({ apartment }: ApartmentCardProps) {
+export function ApartmentCard({
+  apartment,
+  compareSelected = false,
+  compareDisabled = false,
+  onToggleCompare,
+}: ApartmentCardProps) {
   const visibleAmenities = apartment.amenities.slice(0, MAX_VISIBLE_AMENITIES);
   const hiddenAmenityCount =
     apartment.amenities.length - visibleAmenities.length;
 
   return (
-    <article className="flex flex-col overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-sm transition-shadow hover:shadow-md">
+    <article
+      className={`flex flex-col overflow-hidden rounded-xl border bg-white shadow-sm transition-shadow hover:shadow-md ${
+        compareSelected
+          ? "border-zinc-900 ring-2 ring-zinc-900/10"
+          : "border-zinc-200"
+      }`}
+    >
       <div className="relative aspect-[16/10] w-full bg-zinc-100">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -76,6 +90,28 @@ export function ApartmentCard({ apartment }: ApartmentCardProps) {
         <p className="line-clamp-2 text-sm text-zinc-600">
           {apartment.description}
         </p>
+
+        {onToggleCompare ? (
+          <button
+            type="button"
+            onClick={onToggleCompare}
+            disabled={compareDisabled}
+            aria-pressed={compareSelected}
+            className={`mt-auto w-full rounded-lg border px-3 py-2 text-sm font-medium transition-colors ${
+              compareSelected
+                ? "border-zinc-900 bg-zinc-900 text-white hover:bg-zinc-800"
+                : compareDisabled
+                  ? "cursor-not-allowed border-zinc-200 bg-zinc-50 text-zinc-400"
+                  : "border-zinc-200 bg-white text-zinc-800 hover:bg-zinc-50"
+            }`}
+          >
+            {compareSelected
+              ? "Remove from compare"
+              : compareDisabled
+                ? "Compare list full (3 max)"
+                : "Add to compare"}
+          </button>
+        ) : null}
 
         <button
           type="button"
