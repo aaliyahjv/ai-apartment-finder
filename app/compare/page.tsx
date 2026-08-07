@@ -5,17 +5,18 @@ import Link from "next/link";
 import { ComparePanel } from "@/components/apartments/ComparePanel";
 import { DashboardHeader } from "@/components/layout/DashboardHeader";
 import { DashboardShell } from "@/components/layout/DashboardShell";
-import { mockApartments } from "@/data/mock-apartments";
+import { useApartments } from "@/hooks/useApartments";
 import { useCompareSelection } from "@/hooks/useCompareSelection";
 
 export default function ComparePage() {
+  const { apartments, loading, error, refetch } = useApartments();
   const {
     selectedApartments,
     comparisonOpen,
     setComparisonOpen,
     removeFromCompare,
     clearCompare,
-  } = useCompareSelection(mockApartments);
+  } = useCompareSelection(apartments);
 
   useEffect(() => {
     if (selectedApartments.length >= 2) {
@@ -35,7 +36,31 @@ export default function ComparePage() {
         </p>
       </div>
 
-      {selectedApartments.length === 0 ? (
+      {loading ? (
+        <section
+          aria-busy="true"
+          className="rounded-xl border border-zinc-200 bg-white p-8 shadow-sm"
+        >
+          <p className="text-sm font-medium text-zinc-900">Loading comparison…</p>
+          <p className="mt-2 text-sm text-zinc-500">
+            Fetching apartment details from the database.
+          </p>
+        </section>
+      ) : error ? (
+        <section className="rounded-xl border border-red-200 bg-red-50 p-8 text-center shadow-sm">
+          <p className="text-sm font-medium text-red-900">
+            Could not load apartments
+          </p>
+          <p className="mt-2 text-sm text-red-800">{error}</p>
+          <button
+            type="button"
+            onClick={refetch}
+            className="mt-4 rounded-lg bg-red-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-red-800"
+          >
+            Try again
+          </button>
+        </section>
+      ) : selectedApartments.length === 0 ? (
         <section className="rounded-xl border border-dashed border-zinc-300 bg-white p-8 text-center shadow-sm">
           <p className="text-sm font-medium text-zinc-900">
             No apartments selected yet
