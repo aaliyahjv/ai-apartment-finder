@@ -10,10 +10,10 @@
 
 ## Phase 2: Backend
 
-- [ ] Setup Prisma
-- [ ] Connect PostgreSQL
-- [ ] Create apartment schema
-- [ ] Seed database
+- [x] Setup Prisma
+- [x] Connect PostgreSQL
+- [x] Create apartment schema
+- [x] Seed database
 - [ ] Create API routes
 
 ## Phase 3: Integrations
