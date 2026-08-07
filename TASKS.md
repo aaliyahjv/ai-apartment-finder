@@ -14,7 +14,7 @@
 - [x] Connect PostgreSQL
 - [x] Create apartment schema
 - [x] Seed database
-- [ ] Create API routes
+- [x] Create API routes
 
 ## Phase 3: Integrations
 
