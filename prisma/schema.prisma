@@ -13,6 +13,8 @@ model Apartment {
   address      String
   neighborhood String
   city         String
+  state        String
+  zipCode      String
   rent         Int
   bedrooms     Int
   bathrooms    Float

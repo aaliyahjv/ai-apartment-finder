@@ -8,6 +8,8 @@ export type Apartment = {
   address: string;
   neighborhood: string;
   city: string;
+  state: string;
+  zipCode: string;
   rent: number;
   bedrooms: number;
   bathrooms: number;
