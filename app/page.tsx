@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { ApartmentFilters } from "@/components/apartments/ApartmentFilters";
 import { ApartmentGrid } from "@/components/apartments/ApartmentGrid";
+import { ApartmentMap } from "@/components/map/ApartmentMap";
 import { ComparePanel } from "@/components/apartments/ComparePanel";
 import { DashboardHeader } from "@/components/layout/DashboardHeader";
 import { DashboardShell } from "@/components/layout/DashboardShell";
@@ -13,27 +14,6 @@ import {
   createDefaultApartmentFilters,
   type ApartmentFiltersState,
 } from "@/types/apartment-filters";
-
-function SectionPlaceholder({
-  title,
-  description,
-  className,
-}: {
-  title: string;
-  description: string;
-  className?: string;
-}) {
-  return (
-    <section
-      className={`rounded-xl border border-dashed border-zinc-300 bg-white p-6 shadow-sm ${className ?? ""}`}
-      aria-label={title}
-    >
-      <h2 className="text-sm font-semibold text-zinc-900">{title}</h2>
-      <p className="mt-1 text-sm text-zinc-500">{description}</p>
-      <div className="mt-4 h-24 rounded-lg bg-zinc-50 ring-1 ring-inset ring-zinc-100" />
-    </section>
-  );
-}
 
 function uniqueSorted(values: string[]) {
   return [...new Set(values)].sort((a, b) => a.localeCompare(b));
@@ -175,11 +155,40 @@ export default function Home() {
             />
           )}
         </div>
-        <SectionPlaceholder
-          title="Map"
-          description="Interactive Google Maps view coming in a later phase."
-          className="lg:col-span-2 min-h-[320px] lg:min-h-[480px]"
-        />
+        {loading ? (
+          <section
+            aria-busy="true"
+            aria-label="Loading apartment map"
+            className="flex min-h-[320px] flex-col overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-sm lg:col-span-2 lg:min-h-[480px]"
+          >
+            <div className="border-b border-zinc-200 px-4 py-3">
+              <p className="text-sm font-semibold text-zinc-900">Map</p>
+              <p className="mt-0.5 text-sm text-zinc-500">Waiting for listings…</p>
+            </div>
+            <div className="flex flex-1 items-center justify-center bg-zinc-50">
+              <p className="text-sm text-zinc-500">Map will load with your results</p>
+            </div>
+          </section>
+        ) : error ? (
+          <section
+            aria-label="Apartment map"
+            className="flex min-h-[320px] flex-col overflow-hidden rounded-xl border border-zinc-200 bg-white shadow-sm lg:col-span-2 lg:min-h-[480px]"
+          >
+            <div className="border-b border-zinc-200 px-4 py-3">
+              <p className="text-sm font-semibold text-zinc-900">Map</p>
+            </div>
+            <div className="flex flex-1 items-center justify-center px-6 text-center">
+              <p className="text-sm text-zinc-500">
+                Map unavailable until apartment listings load successfully.
+              </p>
+            </div>
+          </section>
+        ) : (
+          <ApartmentMap
+            apartments={filteredApartments}
+            className="lg:col-span-2"
+          />
+        )}
       </div>
 
       {!loading && !error ? (

@@ -18,7 +18,7 @@
 
 ## Phase 3: Integrations
 
-- [ ] Add Google Maps
+- [x] Add Google Maps
 - [ ] Add OpenAI apartment analysis
 
 ## Phase 4: Deployment
