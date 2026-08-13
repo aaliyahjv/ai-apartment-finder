@@ -1,4 +1,5 @@
 import type { Apartment } from "@/types/apartment";
+import { ApartmentAnalysisPanel } from "@/components/apartments/ApartmentAnalysisPanel";
 
 type ApartmentCardProps = {
   apartment: Apartment;
@@ -113,17 +114,7 @@ export function ApartmentCard({
           </button>
         ) : null}
 
-        <button
-          type="button"
-          disabled
-          className="mt-auto w-full rounded-lg border border-zinc-200 bg-zinc-50 px-3 py-2 text-sm font-medium text-zinc-500"
-          aria-describedby={`ai-placeholder-${apartment.id}`}
-        >
-          AI analysis (coming soon)
-        </button>
-        <span id={`ai-placeholder-${apartment.id}`} className="sr-only">
-          AI-powered listing insights will be available in a future release.
-        </span>
+        <ApartmentAnalysisPanel apartmentId={apartment.id} />
       </div>
     </article>
   );
