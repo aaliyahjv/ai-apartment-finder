@@ -1,6 +1,7 @@
 import type { Apartment } from "@/types/apartment";
 import type { ApartmentAnalysis } from "@/types/apartment-analysis";
 import { getOpenAIClient } from "@/lib/openai";
+import { parseApartmentAnalysisJson } from "@/lib/parse-apartment-analysis";
 
 const ANALYSIS_MODEL = "gpt-4o-mini";
 
@@ -46,33 +47,6 @@ function toAnalysisPayload(apartment: Apartment): ApartmentAnalysisPayload {
   };
 }
 
-function parseAnalysisJson(raw: string): ApartmentAnalysis {
-  const trimmed = raw.trim();
-  const jsonText = trimmed.startsWith("```")
-    ? trimmed.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/, "")
-    : trimmed;
-
-  const parsed: unknown = JSON.parse(jsonText);
-  if (
-    typeof parsed !== "object" ||
-    parsed === null ||
-    !Array.isArray((parsed as ApartmentAnalysis).pros) ||
-    !Array.isArray((parsed as ApartmentAnalysis).concerns) ||
-    typeof (parsed as ApartmentAnalysis).bestSuitedFor !== "string"
-  ) {
-    throw new Error("Invalid analysis response format");
-  }
-
-  const analysis = parsed as ApartmentAnalysis;
-  return {
-    pros: analysis.pros.filter((item): item is string => typeof item === "string"),
-    concerns: analysis.concerns.filter(
-      (item): item is string => typeof item === "string",
-    ),
-    bestSuitedFor: analysis.bestSuitedFor.trim(),
-  };
-}
-
 export async function generateApartmentAnalysis(
   apartment: Apartment,
 ): Promise<ApartmentAnalysis> {
@@ -92,5 +66,5 @@ export async function generateApartmentAnalysis(
     throw new Error("Empty analysis response from OpenAI");
   }
 
-  return parseAnalysisJson(outputText);
+  return parseApartmentAnalysisJson(outputText);
 }
