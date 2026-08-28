@@ -2,7 +2,7 @@
 
 ## Goal
 
-Build an AI-powered apartment hunting dashboard that helps users compare apartment listings based on budget, location, and lifestyle preferences.
+Build an AI-powered apartment hunting dashboard that helps users compare apartment listings based on budget, location, apartment features, and selected lifestyle criteria.
 
 ## MVP Features
 
