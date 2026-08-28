@@ -10,8 +10,11 @@ const ANALYSIS_INSTRUCTIONS = `You assess apartment rental listings for prospect
 Rules:
 - Use ONLY facts present in the provided listing JSON.
 - Do not invent amenities, policies, commute times, safety ratings, or neighborhood details.
-- If information is missing or unclear, mention that as a concern instead of guessing.
-- Keep each list item short (one sentence max).
+- Include 1–2 potential concerns in the concerns array when supported by the listing data. Keep each concern to one short sentence.
+- Valid concerns include explicit tradeoffs visible in listing fields, such as limited square footage for the listed layout or a studio layout for renters who need separate living and sleeping spaces.
+- Valid concerns also include important renter information not specified in the provided JSON (for example, parking, laundry, or pet policy), phrased explicitly as "not specified in the listing".
+- Do not invent commute times, safety claims, neighborhood character, policies, amenities, or other facts not present in the JSON.
+- If there is genuinely no supported concern, return an empty concerns array.
 - Return valid JSON only, with this exact shape:
 {"pros":["..."],"concerns":["..."],"bestSuitedFor":"..."}`;
 

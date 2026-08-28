@@ -14,6 +14,22 @@ describe("parseApartmentAnalysisJson", () => {
     );
   });
 
+  it("parses valid analysis JSON with an empty concerns array", () => {
+    expect(
+      parseApartmentAnalysisJson(
+        JSON.stringify({
+          pros: ["Bright unit with in-unit laundry"],
+          concerns: [],
+          bestSuitedFor: "Singles or couples seeking a compact home.",
+        }),
+      ),
+    ).toEqual({
+      pros: ["Bright unit with in-unit laundry"],
+      concerns: [],
+      bestSuitedFor: "Singles or couples seeking a compact home.",
+    });
+  });
+
   it("parses fenced JSON code blocks", () => {
     const fenced = `\`\`\`json
 ${JSON.stringify(validAnalysis, null, 2)}

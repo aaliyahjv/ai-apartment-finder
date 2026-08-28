@@ -9,12 +9,25 @@ type ApartmentAnalysisPanelProps = {
 function AnalysisList({
   title,
   items,
+  emptyMessage,
 }: {
   title: string;
   items: string[];
+  emptyMessage?: string;
 }) {
   if (items.length === 0) {
-    return null;
+    if (!emptyMessage) {
+      return null;
+    }
+
+    return (
+      <div>
+        <h4 className="text-xs font-semibold uppercase tracking-wide text-zinc-500">
+          {title}
+        </h4>
+        <p className="mt-1.5 text-sm text-zinc-600">{emptyMessage}</p>
+      </div>
+    );
   }
 
   return (
@@ -90,7 +103,11 @@ export function ApartmentAnalysisPanel({
           </p>
           <div className="mt-3 space-y-3">
             <AnalysisList title="Pros" items={state.analysis!.pros} />
-            <AnalysisList title="Potential concerns" items={state.analysis!.concerns} />
+            <AnalysisList
+              title="Potential concerns"
+              items={state.analysis!.concerns}
+              emptyMessage="No specific concerns identified from the listing data."
+            />
             <div>
               <h4 className="text-xs font-semibold uppercase tracking-wide text-zinc-500">
                 Best suited for
